@@ -57,7 +57,7 @@ pip install [--editable] .
 or
 
 ```bash
-pip install git+https://github.com/kaushaltrivedi/fast-bert.git
+pip install git+https://github.com/clairett/fast-bert.git
 ```
 
 You will also need to install NVIDIA Apex.
