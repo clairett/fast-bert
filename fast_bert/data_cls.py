@@ -328,8 +328,6 @@ class MultiLabelTextProcessor(TextProcessor):
 class BertDataBunch(object):
     def __init__(
         self,
-        data_dir,
-        label_dir,
         tokenizer,
         train_data=None,
         val_data=None,
@@ -383,7 +381,9 @@ class BertDataBunch(object):
 
         self.labels = processor.get_labels(label_data)
 
-        if train_data:
+        if self.train_data:
+            print(self.train_data)
+            
             # Train DataLoader
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
