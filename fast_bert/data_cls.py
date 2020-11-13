@@ -255,11 +255,11 @@ class TextProcessor(DataProcessor):
                 data.sample(size), "test", text_col=text_col, label_col=None
             )
 
-    def get_labels(self, data):
+    def get_labels(self, df):
         """See base class."""
         if self.labels is None:
             self.labels = list(
-                data[0]
+                df[0]
                 .astype("str")
                 .values
             )
@@ -381,9 +381,7 @@ class BertDataBunch(object):
 
         self.labels = processor.get_labels(label_data)
 
-        if self.train_data:
-            print(self.train_data)
-            
+        if train_data:
             # Train DataLoader
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
