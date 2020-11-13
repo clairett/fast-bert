@@ -258,11 +258,7 @@ class TextProcessor(DataProcessor):
     def get_labels(self, df):
         """See base class."""
         if self.labels is None:
-            self.labels = list(
-                df[0]
-                .astype("str")
-                .values
-            )
+            self.labels = list(df[0])
         return self.labels
 
     def _create_examples(self, df, set_type, text_col, label_col):
@@ -342,7 +338,6 @@ class BertDataBunch(object):
         backend="nccl",
         model_type="bert",
         logger=None,
-        no_cache=False,
         custom_sampler=None,
         pos_weight=None,
         weight=None
@@ -362,7 +357,6 @@ class BertDataBunch(object):
         self.test_dl = None
         self.multi_label = multi_label
         self.n_gpu = 1
-        self.no_cache = no_cache
         self.model_type = model_type
         self.output_mode = "classification"
         self.custom_sampler = custom_sampler
@@ -388,7 +382,7 @@ class BertDataBunch(object):
             )
 
             train_dataset = self.get_dataset_from_examples(
-                train_examples, "train", no_cache=self.no_cache
+                train_examples, "train"
             )
 
             self.train_batch_size = self.batch_size_per_gpu * max(1, self.n_gpu)
@@ -409,7 +403,7 @@ class BertDataBunch(object):
             )
 
             val_dataset = self.get_dataset_from_examples(
-                val_examples, "dev", no_cache=self.no_cache
+                val_examples, "dev"
             )
 
             # no grads necessary, hence double val batch size
