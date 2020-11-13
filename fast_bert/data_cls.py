@@ -399,7 +399,7 @@ class BertDataBunch(object):
             )
 
         if dev_state:
-            # Validation DataLoader
+            # Dev data loading
             val_examples = processor.get_dev_examples(
                 val_data, text_col=text_col, label_col=label_col
             )
