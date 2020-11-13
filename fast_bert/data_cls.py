@@ -295,7 +295,7 @@ class MultiLabelTextProcessor(TextProcessor):
                 label_list = self.get_labels()
                 labels = [0] * len(label_list)
                 # cast with string in case labels are integers
-                labels[label_list.index(str(row[label_col]))] = 1
+                labels[label_list.index(row[label_col])] = 1
                 return labels
 
         """Creates examples for the training and dev sets."""
@@ -380,8 +380,6 @@ class BertDataBunch(object):
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
             )
-            print('getting training examples...')
-            print(train_examples)
             train_dataset = self.get_dataset_from_examples(
                 train_examples, "train"
             )
