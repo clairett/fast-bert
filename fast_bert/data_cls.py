@@ -328,9 +328,9 @@ class BertDataBunch(object):
         train_data=None,
         val_data=None,
         test_data=None,
-        train=False,
-        dev=False,
-        test=False,
+        train_state=False,
+        dev_state=False,
+        test_state=False,
         label_data=None,
         text_col="text",
         label_col="label",
@@ -378,7 +378,7 @@ class BertDataBunch(object):
 
         self.labels = processor.get_labels(label_data)
 
-        if train:
+        if train_state:
             # Training data loading
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
@@ -398,7 +398,7 @@ class BertDataBunch(object):
                 train_dataset, sampler=train_sampler, batch_size=self.train_batch_size
             )
 
-        if dev:
+        if dev_state:
             # Validation DataLoader
             val_examples = processor.get_dev_examples(
                 val_data, text_col=text_col, label_col=label_col
@@ -415,7 +415,7 @@ class BertDataBunch(object):
                 val_dataset, sampler=val_sampler, batch_size=self.val_batch_size
             )
 
-        if test:
+        if test_state:
             # Test set loader for predictions
             test_examples = processor.get_test_examples(
                 test_data, text_col=text_col, label_col=label_col
