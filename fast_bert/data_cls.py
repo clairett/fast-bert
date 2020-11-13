@@ -287,7 +287,6 @@ class TextProcessor(DataProcessor):
 
 class MultiLabelTextProcessor(TextProcessor):
     def _create_examples(self, df, set_type, text_col, label_col):
-        print(label_col)
         def _get_labels(row, label_col):
             if isinstance(label_col, list):
                 return list(row[label_col])
@@ -329,6 +328,9 @@ class BertDataBunch(object):
         train_data=None,
         val_data=None,
         test_data=None,
+        train=False,
+        dev=False,
+        test=False,
         label_data=None,
         text_col="text",
         label_col="label",
@@ -376,9 +378,8 @@ class BertDataBunch(object):
 
         self.labels = processor.get_labels(label_data)
 
-        if train_data:
-            # Train DataLoader
-            print('getting training data...')
+        if train:
+            # Training data loading
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
             )
@@ -397,7 +398,7 @@ class BertDataBunch(object):
                 train_dataset, sampler=train_sampler, batch_size=self.train_batch_size
             )
 
-        if val_data:
+        if dev:
             # Validation DataLoader
             val_examples = processor.get_dev_examples(
                 val_data, text_col=text_col, label_col=label_col
@@ -414,7 +415,7 @@ class BertDataBunch(object):
                 val_dataset, sampler=val_sampler, batch_size=self.val_batch_size
             )
 
-        if test_data:
+        if test:
             # Test set loader for predictions
             test_examples = processor.get_test_examples(
                 test_data, text_col=text_col, label_col=label_col
