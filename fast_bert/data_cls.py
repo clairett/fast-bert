@@ -380,7 +380,8 @@ class BertDataBunch(object):
             train_examples = processor.get_train_examples(
                 train_data, text_col=text_col, label_col=label_col
             )
-
+            print('getting training examples...')
+            print(train_examples)
             train_dataset = self.get_dataset_from_examples(
                 train_examples, "train"
             )
