@@ -46,14 +46,13 @@ class BertClassificationPredictor(object):
             self.label_path,
             self.label_path,
             self.tokenizer,
-            train_file=None,
-            val_file=None,
+            train_data=None,
+            val_data=None,
             batch_size_per_gpu=32,
             max_seq_length=512,
             multi_gpu=False,
             multi_label=self.multi_label,
             model_type=self.model_type,
-            no_cache=True,
         )
 
         learner = BertLearner.from_pretrained_model(

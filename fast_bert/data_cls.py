@@ -417,12 +417,15 @@ class BertDataBunch(object):
 
         if test_state:
             # Test set loader for predictions
-            test_examples = processor.get_test_examples(
-                test_data, text_col=text_col, label_col=label_col
-            )
+            test_examples = []
+            input_data = []
+
+            for index, text in enumerate(test_data):
+                test_examples.append(InputExample(index, text))
+                input_data.append({"id": index, "text": text})
 
             test_dataset = self.get_dataset_from_examples(
-                test_examples, "test", is_test=True, no_cache=self.no_cache
+                test_examples, "test", is_test=True
             )
 
             self.test_batch_size = self.batch_size_per_gpu * max(1, self.n_gpu)
