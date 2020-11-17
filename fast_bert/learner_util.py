@@ -126,10 +126,14 @@ class Learner(object):
         if not path:
             path = self.output_dir / "model_out"
 
+        transformer_path = self.output_dir / "transformer"
+
         path.mkdir(exist_ok=True)
+        transformer_path.mkdir(exist_ok=True)
 
         # Convert path to str for save_pretrained calls
         path = str(path)
+        transformer_path = str(transformer_path)
 
         torch.cuda.empty_cache()
         # Save a trained model
@@ -137,6 +141,8 @@ class Learner(object):
             self.model.module if hasattr(self.model, "module") else self.model
         )  # Only save the model it-self
         model_to_save.save_pretrained(path)
+        model_to_save.bert.save_pretrained(transformer_path)
 
         # save the tokenizer
         self.data.tokenizer.save_pretrained(path)
+        self.data.tokenizer.save_pretrained(transformer_path)
