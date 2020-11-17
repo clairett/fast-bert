@@ -121,19 +121,15 @@ class Learner(object):
                 num_training_steps=t_total,
             )
 
-    def save_model(self, model_type='bert', path=None):
+    def save_model(self, path=None):
 
         if not path:
             path = self.output_dir / "model_out"
 
-        transformer_path = self.output_dir / "transformer"
-
         path.mkdir(exist_ok=True)
-        transformer_path.mkdir(exist_ok=True)
 
         # Convert path to str for save_pretrained calls
         path = str(path)
-        transformer_path = str(transformer_path)
 
         torch.cuda.empty_cache()
         # Save a trained model
@@ -142,12 +138,5 @@ class Learner(object):
         )  # Only save the model it-self
         model_to_save.save_pretrained(path)
 
-        if model_type == 'bert':
-            self.model.bert.save_pretrained(transformer_path)
-
-        if model_type == 'roberta':
-            self.model.roberta.save_pretrained(transformer_path)
-
         # save the tokenizer
         self.data.tokenizer.save_pretrained(path)
-        self.data.tokenizer.save_pretrained(transformer_path)
