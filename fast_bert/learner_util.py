@@ -121,7 +121,7 @@ class Learner(object):
                 num_training_steps=t_total,
             )
 
-    def save_model(self, path=None):
+    def save_model(self, model_type='bert', path=None):
 
         if not path:
             path = self.output_dir / "model_out"
@@ -141,7 +141,12 @@ class Learner(object):
             self.model.module if hasattr(self.model, "module") else self.model
         )  # Only save the model it-self
         model_to_save.save_pretrained(path)
-        model_to_save.bert.save_pretrained(transformer_path)
+
+        if model_type == 'bert':
+            self.model.bert.save_pretrained(transformer_path)
+
+        if model_type == 'roberta':
+            self.model.roberta.save_pretrained(transformer_path)
 
         # save the tokenizer
         self.data.tokenizer.save_pretrained(path)
