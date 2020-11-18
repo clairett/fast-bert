@@ -126,8 +126,6 @@ class Learner(object):
         if not path:
             path = self.output_dir / "model_out"
 
-        path.mkdir(exist_ok=True)
-
         # Convert path to str for save_pretrained calls
         path = str(path)
 
