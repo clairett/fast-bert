@@ -284,6 +284,7 @@ class BertLearner(Learner):
         results_val = []
 
         tensorboard_dir = self.output_dir / "tensorboard"
+        tensorboard_dir.mkdir(exist_ok=True)
 
         # Train the model
         tb_writer = SummaryWriter(tensorboard_dir)
