@@ -10,7 +10,10 @@ from transformers import (
     DistilBertForSequenceClassification,
     CamembertForSequenceClassification,
     AlbertForSequenceClassification,
-    ElectraForSequenceClassification
+    ElectraForSequenceClassification,
+    XLMRobertaConfig,
+    XLMRobertaModel,
+    XLMRobertaForSequenceClassification
 )
 
 import torch
@@ -138,6 +141,39 @@ class RobertaForMultiLabelSequenceClassification(RobertaForSequenceClassificatio
         return outputs  # (loss), logits, (hidden_states), (attentions)
 
 
+class XLMRobertaForMultiLabelSequenceClassification(XLMRobertaForSequenceClassification):
+    def forward(
+        self,
+        input_ids,
+        token_type_ids=None,
+        attention_mask=None,
+        labels=None,
+        position_ids=None,
+        head_mask=None,
+    ):
+        outputs = self.roberta(
+            input_ids,
+            position_ids=position_ids,
+            token_type_ids=token_type_ids,
+            attention_mask=attention_mask,
+            head_mask=head_mask,
+        )
+        sequence_output = outputs[0]
+        logits = self.classifier(sequence_output)
+
+        outputs = (logits,) + outputs[2:]
+
+        if labels is not None:
+            loss_fct = BCEWithLogitsLoss(weight=self.weight, pos_weight=self.pos_weight)
+
+            loss = loss_fct(
+                logits.view(-1, self.num_labels), labels.view(-1, self.num_labels)
+            )
+            outputs = (loss,) + outputs
+
+        return outputs  # (loss), logits, (hidden_states), (attentions)
+
+
 class BertForMultiLabelSequenceClassification(BertForSequenceClassification):
     """BERT model for classification.
     This module is composed of the BERT model with a linear layer on top of
@@ -176,7 +212,6 @@ class BertForMultiLabelSequenceClassification(BertForSequenceClassification):
     logits = model(input_ids, token_type_ids, input_mask)
     ```
     """
-
     def forward(
         self,
         input_ids,

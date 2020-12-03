@@ -11,6 +11,7 @@ from .modeling import (
     BertForMultiLabelSequenceClassification,
     XLNetForMultiLabelSequenceClassification,
     RobertaForMultiLabelSequenceClassification,
+    XLMRobertaForMultiLabelSequenceClassification,
     DistilBertForMultiLabelSequenceClassification,
     CamembertForMultiLabelSequenceClassification,
     AlbertForMultiLabelSequenceClassification,
@@ -55,7 +56,10 @@ from transformers import (
     DistilBertTokenizer,
     ElectraConfig,
     ElectraForSequenceClassification,
-    ElectraTokenizer
+    ElectraTokenizer,
+    XLMRobertaConfig,
+    XLMRobertaTokenizer,
+    XLMRobertaForSequenceClassification
 )
 
 from transformers import AutoModelForSequenceClassification, AutoConfig
@@ -83,6 +87,11 @@ MODEL_CLASSES = {
         RobertaConfig,
         (RobertaForSequenceClassification, RobertaForMultiLabelSequenceClassification),
         RobertaTokenizer,
+    ),
+    "xlmroberta": (
+        XLMRobertaConfig,
+        (XLMRobertaForSequenceClassification, XLMRobertaForMultiLabelSequenceClassification),
+        XLMRobertaTokenizer,
     ),
     "distilbert": (
         DistilBertConfig,
