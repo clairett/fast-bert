@@ -6,10 +6,6 @@ import pdb
 
 CLASSIFICATION_THRESHOLD: float = 0.5  # Best keep it in [0.0, 1.0] range
 
-# def accuracy(out, labels):
-#     outputs = np.argmax(out, axis=1)
-#     return np.sum(outputs == labels)
-
 
 def accuracy(y_pred: Tensor, y_true: Tensor):
     y_pred = y_pred.cpu()
@@ -46,9 +42,6 @@ def accuracy_thresh(
     if sigmoid:
         y_pred = y_pred.sigmoid()
     return ((y_pred > thresh) == y_true.bool()).float().mean().item()
-
-
-#     return np.mean(((y_pred>thresh)==y_true.byte()).float().cpu().numpy(), axis=1).sum()
 
 
 def fbeta(
