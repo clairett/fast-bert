@@ -1,4 +1,3 @@
-import torch
 import numpy as np
 from torch import Tensor
 from sklearn.metrics import roc_curve, auc, hamming_loss, accuracy_score
@@ -16,7 +15,7 @@ def accuracy(y_pred: Tensor, y_true: Tensor):
 def accuracy_multilabel(y_pred: Tensor, y_true: Tensor, sigmoid: bool = True, threshold: float = 0.5):
     N, C = y_true.shape
     if sigmoid:
-        y_pred = torch.sigmoid(y_pred)
+        y_pred = y_pred,sigmoid()
     y_pred = y_pred.cpu()
     y_true = y_true.cpu()
     y_pred[y_pred >= threshold] = 1
