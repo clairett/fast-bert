@@ -17,7 +17,7 @@ class BertClassificationPredictor(object):
     def __init__(
         self,
         model_path,
-        label_path,
+        label_data,
         multi_label=False,
         model_type="bert",
         use_fast_tokenizer=True,
@@ -28,7 +28,7 @@ class BertClassificationPredictor(object):
             device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
         self.model_path = model_path
-        self.label_path = label_path
+        self.label_data = label_data
         self.multi_label = multi_label
         self.model_type = model_type
         self.do_lower_case = do_lower_case
@@ -46,6 +46,7 @@ class BertClassificationPredictor(object):
             self.tokenizer,
             train_data=None,
             val_data=None,
+            label_data=self.label_data,
             batch_size_per_gpu=32,
             max_seq_length=512,
             multi_gpu=False,

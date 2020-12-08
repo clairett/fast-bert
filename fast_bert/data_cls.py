@@ -434,6 +434,26 @@ class BertDataBunch(object):
                 test_dataset, sampler=test_sampler, batch_size=self.test_batch_size
             )
 
+
+    def get_dl_from_texts(self, texts):
+
+        test_examples = []
+        input_data = []
+
+        for index, text in enumerate(texts):
+            test_examples.append(InputExample(index, text, label=None))
+            input_data.append({"id": index, "text": text})
+
+        test_dataset = self.get_dataset_from_examples(
+            test_examples, "test", is_test=True
+        )
+
+        test_sampler = SequentialSampler(test_dataset)
+        return DataLoader(
+            test_dataset, sampler=test_sampler, batch_size=self.batch_size_per_gpu
+        )
+
+
     def get_dataset_from_examples(
         self, examples, set_type="train", is_test=False
     ):
