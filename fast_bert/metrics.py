@@ -12,16 +12,20 @@ def accuracy(y_pred: Tensor, y_true: Tensor):
     return np.mean(outputs.numpy() == y_true.detach().cpu().numpy())
 
 
-def accuracy_multilabel(y_pred: Tensor, y_true: Tensor, sigmoid: bool = True, threshold: float = 0.5):
-    N, C = y_true.shape
+def accuracy_multilabel(
+    y_pred: Tensor,
+    y_true: Tensor,
+    sigmoid: bool = True,
+    thresh: float = CLASSIFICATION_THRESHOLD,
+    normalize: bool = True,
+    sample_weight=None,
+):
     if sigmoid:
         y_pred = y_pred.sigmoid()
-    y_pred = y_pred.cpu()
-    y_true = y_true.cpu()
-    y_pred[y_pred > threshold] = 1
-    y_pred[y_pred <= threshold] = 0
-    y_true = y_true
-    return (y_pred == y_true).sum() / (N*C)
+    y_pred = (y_pred > thresh).float()
+    return accuracy_score(
+        y_true, y_pred, normalize=normalize, sample_weight=sample_weight
+    )
     # if sigmoid:
     #     y_pred = y_pred.sigmoid()
     # y_pred = y_pred.cpu()
@@ -92,22 +96,6 @@ def Hamming_loss(
         y_pred = y_pred.sigmoid()
     y_pred = (y_pred > thresh).float()
     return hamming_loss(y_true, y_pred, sample_weight=sample_weight)
-
-
-def Exact_Match_Ratio(
-    y_pred: Tensor,
-    y_true: Tensor,
-    sigmoid: bool = True,
-    thresh: float = CLASSIFICATION_THRESHOLD,
-    normalize: bool = True,
-    sample_weight=None,
-):
-    if sigmoid:
-        y_pred = y_pred.sigmoid()
-    y_pred = (y_pred > thresh).float()
-    return accuracy_score(
-        y_true, y_pred, normalize=normalize, sample_weight=sample_weight
-    )
 
 
 def F1(y_pred: Tensor, y_true: Tensor, threshold: float = CLASSIFICATION_THRESHOLD):
