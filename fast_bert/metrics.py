@@ -18,10 +18,10 @@ def accuracy_multilabel(y_pred: Tensor, y_true: Tensor, sigmoid: bool = True, th
         y_pred = y_pred.sigmoid()
     y_pred = y_pred.cpu()
     y_true = y_true.cpu()
-    y_pred[y_pred >= threshold] = 1
-    y_pred[y_pred < threshold] = 0
+    y_pred[y_pred > threshold] = 1
+    y_pred[y_pred <= threshold] = 0
     y_true = y_true
-    return ((y_pred == y_true).sum() / (N*C)) * 100
+    return (y_pred == y_true).sum() / (N*C)
     # if sigmoid:
     #     y_pred = y_pred.sigmoid()
     # y_pred = y_pred.cpu()
