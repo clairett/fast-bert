@@ -43,8 +43,6 @@ class BertClassificationPredictor(object):
 
     def get_learner(self):
         databunch = BertDataBunch(
-            self.label_path,
-            self.label_path,
             self.tokenizer,
             train_data=None,
             val_data=None,
@@ -107,10 +105,9 @@ class BertNERPredictor(object):
 
     def get_learner(self):
         databunch = BertNERDataBunch(
-            self.label_path,
             self.tokenizer,
-            train_file=None,
-            val_file=None,
+            train_data=None,
+            val_data=None,
             batch_size_per_gpu=32,
             max_seq_length=512,
             multi_gpu=False,
