@@ -22,6 +22,8 @@ def accuracy_multilabel(
 ):
     if sigmoid:
         y_pred = y_pred.sigmoid()
+    y_pred = y_pred.cpu()
+    y_true = y_true.cpu()
     y_pred = (y_pred > thresh).float()
     return accuracy_score(
         y_true, y_pred, normalize=normalize, sample_weight=sample_weight
